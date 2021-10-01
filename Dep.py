@@ -12,6 +12,7 @@ import scipy.signal as sg
 import pandas as pd
 from scipy import interpolate
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+import matplotlib.gridspec as gridspec
 
 
 # =============================================================================
@@ -215,24 +216,23 @@ txz = txz + tz[0] # Recorrer el espectrograma
 # fig.tight_layout()
 # fig.savefig("OG5.png",dpi=400,pad_inches=40)
 
+
 # Test
-fig,(ax1,ax2,ax3)= plt.subplots(1,3)
+fig = plt.figure(constrained_layout=True)
+gs = gridspec.GridSpec(1,2,figure=fig)
 fig.suptitle("OG5")
+ax1 = fig.add_subplot(gs[0,0])
 ax1.plot(t1,h1,color="darkblue")
 ax1.set_xlabel("t [s]")
 ax1.set_ylabel("$h/h_{rms}$")
-ax2 = fig.add_subplot(1,2,2,sharex=ax2,sharey=ax2)
+ax2 = fig.add_subplot(gs[0,1])
 ax2.set_ylim(0,max(fz) + 200)
 ax2.set_xlim(-.5,1.5)
 ax2.set_xlabel("t [s]")
 ax2.set_ylabel("Frequency [Hz]")
-im2=ax2.plot(tz,fz,"r")
+ax2.plot(tz,fz,"w")
 im1=ax2.pcolormesh(txz, fxz, Sxz,shading="auto")
-
-divider = make_axes_locatable(plt.gca())
-cax = divider.append_axes("right", "5%", pad="3%")
-plt.colorbar(im1, cax=cax)
-plt.tight_layout()
+plt.colorbar(im1, ax=ax2)
 #fig.savefig("OG5test.png",dpi=400,pad_inches=40)
 
 
